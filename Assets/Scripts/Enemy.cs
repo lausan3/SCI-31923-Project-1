@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class EnemyController : MonoBehaviour
+public class Enemy : MonoBehaviour, IEnemy
 {
     [Header("Stats")] 
     public float startingHealth = 20f;
@@ -14,8 +14,8 @@ public class EnemyController : MonoBehaviour
     public float maxDistDelta = 0.01f;
     public Color damagedFlashColor = Color.red;
     private Color originalColor;
-    
-    private 
+
+    private TextMeshProUGUI healthText;
     private float health;
     private Transform player;
 
@@ -23,6 +23,9 @@ public class EnemyController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").transform;
         health = startingHealth;
+        healthText = transform.Find("Canvas").Find("Health Text").GetComponent<TextMeshProUGUI>();
+
+        healthText.text = startingHealth.ToString();
 
         originalColor = gameObject.GetComponent<Material>().color;
     }
@@ -41,6 +44,8 @@ public class EnemyController : MonoBehaviour
     {
         health -= damage;
 
+        healthText.text = health.ToString();
+        
         if (health <= 0)
         {
             Destroy(this);

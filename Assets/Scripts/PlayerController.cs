@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -12,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Combat")] 
     public LayerMask enemyMask;
+
+    public GameObject attackType;
 
     private float health;
     private float damage;
@@ -47,28 +50,28 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerInput()
     {
-        if (Input.GetKey("W"))
+        if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector2.up * speed * Time.deltaTime);
             // set aiming angle
             aimingDirection = Vector2.up;
         }
 
-        if (Input.GetKey("A"))
+        if (Input.GetKey(KeyCode.A))
         {
             transform.Translate(Vector2.left * speed * Time.deltaTime);
             // set aiming angle
             aimingDirection = Vector2.left;
         }
 
-        if (Input.GetKey("S"))
+        if (Input.GetKey(KeyCode.S))
         {
             transform.Translate(Vector2.down * speed * Time.deltaTime);
             // set aiming angle
             aimingDirection = Vector2.down;
         }
 
-        if (Input.GetKey("D"))
+        if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(Vector2.right * speed * Time.deltaTime);
             // set aiming angle
@@ -79,20 +82,8 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Attack(float waitTime)
     {
         attacking = true;
-        
-        // check for overlap
-        Collider2D[] hit = Physics2D.OverlapCapsuleAll(transform.position * aimingDirection * range,
-             Vector2.one * range, 
-            0f,
-            enemyMask);
-        
-        Debug.DrawRay(Vector3.one * range, aimingDirection, Color.green);
 
-        foreach (var other in hit)
-        {
-            EnemyController enemy = other.transform.GetComponent<EnemyController>();
-            StartCoroutine(enemy.Hurt(damage));
-        }
+        Instantiate(attackType, range * aimingDirection, Quaternion.identity);
         
         yield return new WaitForSeconds(waitTime);
 
@@ -101,9 +92,13 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateStats()
     {
+        speed = stats.moveSpeed;
         damage = stats.attackDamage;
         range = stats.attackRange;
         attackSpeed = stats.attackSpeed;
         knockbackForce = stats.knockbackCoefficient;
+
+        MeleeAttack attackTypeC = GetComponent<MeleeAttack>();
+        MeleeAttack.dmg = damage;
     }
 }

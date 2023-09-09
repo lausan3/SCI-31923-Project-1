@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-class Dummy : MonoBehaviour
+class Dummy : MonoBehaviour, IEnemy
 {
     [Header("Stats")] 
     public float startingHealth = 20f;
@@ -24,9 +24,11 @@ class Dummy : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         health = startingHealth;
 
+        healthText = transform.Find("Canvas").Find("Health Text").GetComponent<TextMeshProUGUI>();
+
         healthText.text = health.ToString();
         
-        originalColor = gameObject.GetComponent<Material>().color;
+        originalColor = gameObject.GetComponent<Renderer>().material.color;
     }
 
     public IEnumerator Hurt(float damage)
@@ -41,7 +43,7 @@ class Dummy : MonoBehaviour
         }
         
         // flash color
-        Material mat = gameObject.GetComponent<Material>();
+        Material mat = gameObject.GetComponent<Renderer>().material;
         mat.color = damagedFlashColor;
 
         yield return new WaitForSeconds(IFrameTime);
