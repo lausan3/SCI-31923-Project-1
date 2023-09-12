@@ -112,7 +112,6 @@ GameObject:
   - component: {fileID: 7240874819346234022}
   - component: {fileID: 7240874819346234017}
   - component: {fileID: 6209103640932915251}
-  - component: {fileID: 4556994087874935251}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: NPC
@@ -206,27 +205,6 @@ MonoBehaviour:
   IFrameTime: 0.02
   maxDistDelta: 0.01
   damagedFlashColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!50 &4556994087874935251
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7240874819346234016}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &9093799165332633622
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")] 
     public LayerMask enemyMask;
 
+    public float overlapRadius = 0.5f;
     public GameObject attackType;
 
     private float health;
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private float range;
     private float attackSpeed;
     private float knockbackForce;
-    private Vector2 aimingDirection;
+    private Vector2 aimingDirection = Vector2.right;
     private bool attacking;
     private float timeToAttackSecs;
 
@@ -77,16 +78,32 @@ public class PlayerController : MonoBehaviour
             // set aiming angle
             aimingDirection = Vector2.right;
         }
+        
+        Debug.Log((aimingDirection));
     }
 
     private IEnumerator Attack(float waitTime)
     {
         attacking = true;
 
-        Instantiate(attackType, range * aimingDirection, Quaternion.identity);
+        // Physics2D.OverlapCircleAll()
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(aimingDirection * range, overlapRadius, enemyMask);
+
+        foreach (var other in hitEnemies)
+        {
+            if (other != null)
+            {
+                IEnemy ec = other.transform.GetComponent<IEnemy>();
+                ec.Hurt(damage);
+            }
+        }
+        
+        GameObject attack = Instantiate(attackType, transform.position * range * aimingDirection, Quaternion.identity);
         
         yield return new WaitForSeconds(waitTime);
-
+        
+        Destroy(attack);
+        
         attacking = false;
     }
 
@@ -97,8 +114,5 @@ public class PlayerController : MonoBehaviour
         range = stats.attackRange;
         attackSpeed = stats.attackSpeed;
         knockbackForce = stats.knockbackCoefficient;
-
-        MeleeAttack attackTypeC = GetComponent<MeleeAttack>();
-        MeleeAttack.dmg = damage;
     }
 }
