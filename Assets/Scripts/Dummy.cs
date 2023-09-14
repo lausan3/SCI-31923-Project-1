@@ -8,8 +8,7 @@ class Dummy : MonoBehaviour, IEnemy
     public float startingHealth = 20f;
     public float attackDamage = 20f;
     public float IFrameTime = 0.02f;
-
-    public float maxDistDelta = 0.01f;
+    
     public Color damagedFlashColor = Color.red;
 
     private TextMeshProUGUI healthText;
@@ -36,6 +35,8 @@ class Dummy : MonoBehaviour, IEnemy
         health -= damage;
 
         healthText.text = health.ToString();
+        
+        Debug.Log(name + ": " + health);
 
         if (health <= 0)
         {

@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour, IEnemy
 
         healthText.text = health.ToString();
         
+        Debug.Log(name + ": " + health);
+        
         if (health <= 0)
         {
             Destroy(this);

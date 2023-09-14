@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Scripting;
 
 public class PlayerController : MonoBehaviour
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     private float health;
     private float damage;
+    // this should be a total range from transform.pos -> the end of the overlap circle
     private float range;
     private float attackSpeed;
     private float knockbackForce;
@@ -27,12 +29,16 @@ public class PlayerController : MonoBehaviour
     private float timeToAttackSecs;
 
     private float timer;
+    private CircleCollider2D coli;
+
+    [Header("Debug")] public float debugLineZ = 0f;
 
     private void Start()
     {
         UpdateStats();
         attacking = false;
         timer = attackSpeed;
+        coli = GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame
@@ -79,7 +85,7 @@ public class PlayerController : MonoBehaviour
             aimingDirection = Vector2.right;
         }
         
-        Debug.Log((aimingDirection));
+        // Debug.Log((aimingDirection));
     }
 
     private IEnumerator Attack(float waitTime)
@@ -87,18 +93,28 @@ public class PlayerController : MonoBehaviour
         attacking = true;
 
         // Physics2D.OverlapCircleAll()
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(aimingDirection * range, overlapRadius, enemyMask);
-
+        float radius = (range - coli.radius) / 2;
+        // this is the range to use for OverlapCircleAll
+        Vector2 sendRange = (Vector2)transform.position + (aimingDirection * range) - new Vector2(radius, radius);
+        Debug.Log("Current aim dir * range: " + aimingDirection * range);
+        Debug.Log("Current position: " + transform.position);
+        Debug.Log("Send range: " + sendRange);
+        Debug.Log("Circle radius: " + radius);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(sendRange, radius, enemyMask);
+        Debug.DrawLine(new Vector3(transform.position.x, transform.position.y, debugLineZ), new Vector3(transform.position.x + range, transform.position.y + range, debugLineZ), Color.red);
+        // Debug.Log("Attacked!");
+        
         foreach (var other in hitEnemies)
         {
             if (other != null)
             {
                 IEnemy ec = other.transform.GetComponent<IEnemy>();
                 ec.Hurt(damage);
+                Debug.Log("Hurt " + other.name + "!");
             }
         }
         
-        GameObject attack = Instantiate(attackType, transform.position * range * aimingDirection, Quaternion.identity);
+        GameObject attack = Instantiate(attackType, sendRange, Quaternion.identity);
         
         yield return new WaitForSeconds(waitTime);
         
