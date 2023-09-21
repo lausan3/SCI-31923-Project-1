@@ -54,8 +54,8 @@ public class GameManager : MonoBehaviour
     {
         Vector3 playerPos = player.transform.position;
 
-        float pointX = Random.Range(-playerPos.x + spawnRange, playerPos.x + spawnRange);
-        float pointY = Random.Range(-playerPos.y + spawnRange, playerPos.y + spawnRange);
+        float pointX = Random.Range(-playerPos.x - spawnRange, playerPos.x + spawnRange);
+        float pointY = Random.Range(-playerPos.y - spawnRange, playerPos.y + spawnRange);
 
         return new Vector3(pointX, pointY, 1f);
     }
