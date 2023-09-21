@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour, IEnemy
     public float startingHealth = 20f;
     public float speed = 4f;
     public float attackDamage = 20f;
-    public float IFrameTime = 0.02f;
+    public float IFrameTime = 0.1f;
 
     public float maxDistDelta = 0.01f;
     public Color damagedFlashColor = Color.red;
@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
         healthText.text = startingHealth.ToString();
 
-        originalColor = gameObject.GetComponent<Material>().color;
+        originalColor = gameObject.GetComponent<Renderer>().material.color;
     }
 
     private void Update()
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public void ChasePlayer()
     {
-        transform.position = Vector2.MoveTowards(transform.position, player.position, maxDistDelta) * speed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, player.position, maxDistDelta);
     }
 
     public IEnumerator Hurt(float damage)
@@ -50,11 +50,11 @@ public class Enemy : MonoBehaviour, IEnemy
         
         if (health <= 0)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         
         // flash color
-        Material mat = gameObject.GetComponent<Material>();
+        Material mat = gameObject.GetComponent<Renderer>().material;
         mat.color = damagedFlashColor;
 
         yield return new WaitForSeconds(IFrameTime);

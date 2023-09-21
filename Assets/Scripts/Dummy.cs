@@ -7,7 +7,7 @@ class Dummy : MonoBehaviour, IEnemy
     [Header("Stats")] 
     public float startingHealth = 20f;
     public float attackDamage = 20f;
-    public float IFrameTime = 0.02f;
+    public float IFrameTime = 0.1f;
     
     public Color damagedFlashColor = Color.red;
 
@@ -40,7 +40,7 @@ class Dummy : MonoBehaviour, IEnemy
 
         if (health <= 0)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         
         // flash color

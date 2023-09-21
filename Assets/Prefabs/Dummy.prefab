@@ -236,8 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 20
   attackDamage: 20
-  IFrameTime: 0.02
-  maxDistDelta: 0.01
+  IFrameTime: 0.1
   damagedFlashColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!61 &-4018877985788995915
 BoxCollider2D:

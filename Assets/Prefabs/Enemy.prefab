@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 7240874819346234022}
   - component: {fileID: 7240874819346234017}
   - component: {fileID: 6209103640932915251}
+  - component: {fileID: -7780238700485729568}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: NPC
@@ -202,9 +203,35 @@ MonoBehaviour:
   startingHealth: 20
   speed: 4
   attackDamage: 20
-  IFrameTime: 0.02
-  maxDistDelta: 0.01
+  IFrameTime: 0.1
+  maxDistDelta: 0.005
   damagedFlashColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!61 &-7780238700485729568
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7240874819346234016}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &9093799165332633622
 GameObject:
   m_ObjectHideFlags: 0
