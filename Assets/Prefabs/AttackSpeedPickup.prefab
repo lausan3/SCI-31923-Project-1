@@ -247,8 +247,8 @@ GameObject:
   - component: {fileID: 5691476438232662966}
   - component: {fileID: 8946662566709626918}
   - component: {fileID: 6462076347252539395}
-  - component: {fileID: 9084648753150775860}
   - component: {fileID: -7168562971568085854}
+  - component: {fileID: 1448515794685038230}
   m_Layer: 0
   m_Name: AttackSpeedPickup
   m_TagString: Untagged
@@ -340,25 +340,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.49999997
---- !u!114 &9084648753150775860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650281697129498840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b5cbff7ca78b24e8b81c4e4371bc7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pc: {fileID: 0}
-  ps: {fileID: 0}
-  healValue: 15
-  damagePickupValue: 10
-  attackSpeedPickupValue: 0.25
-  rangePickupValue: 0.5
-  speedPickupValue: 1
 --- !u!50 &-7168562971568085854
 Rigidbody2D:
   serializedVersion: 4
@@ -380,3 +361,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1448515794685038230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4650281697129498840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e87afabb2f988f448c5465c1ee9fa03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pc: {fileID: 0}
+  ps: {fileID: 0}
+  attackSpeedPickupValue: 0.1

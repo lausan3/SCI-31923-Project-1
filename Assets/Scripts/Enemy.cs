@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour, IEnemy
         transform.position = Vector2.MoveTowards(transform.position, player.position, maxDistDelta);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -63,7 +63,6 @@ public class Enemy : MonoBehaviour, IEnemy
         // taking damage
         health -= damage;
         healthText.text = health.ToString();
-        Debug.Log(name + ": " + health);
         
         if (health <= 0)
         {
@@ -73,7 +72,7 @@ public class Enemy : MonoBehaviour, IEnemy
         }
         
         // knockback
-        Vector2 knockbackDir = (player.position - transform.position).normalized;
+        Vector2 knockbackDir = (transform.position - player.position).normalized;
         rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
         
         // flash color

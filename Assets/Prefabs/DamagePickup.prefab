@@ -145,9 +145,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3553486744781188520}
   - component: {fileID: 1991412003012234967}
-  - component: {fileID: 4985854099557591616}
   - component: {fileID: 2771228971482679550}
   - component: {fileID: 2005010292230224738}
+  - component: {fileID: 5922988991603819456}
   m_Layer: 0
   m_Name: DamagePickup
   m_TagString: Untagged
@@ -223,25 +223,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4985854099557591616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6491995583567841289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b5cbff7ca78b24e8b81c4e4371bc7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pc: {fileID: 0}
-  ps: {fileID: 0}
-  healValue: 15
-  damagePickupValue: 10
-  attackSpeedPickupValue: 0.25
-  rangePickupValue: 0.5
-  speedPickupValue: 1
 --- !u!58 &2771228971482679550
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -279,6 +260,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &5922988991603819456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6491995583567841289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb2dddf2c0c554449b534bca2b97a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pc: {fileID: 0}
+  ps: {fileID: 0}
+  damagePickupValue: 5
 --- !u!1 &7745652345789836992
 GameObject:
   m_ObjectHideFlags: 0

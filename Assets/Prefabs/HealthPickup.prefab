@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3797613864061755890}
   - component: {fileID: 133727212194369158}
-  - component: {fileID: 5265368873557578166}
   - component: {fileID: 4472021550023713950}
+  - component: {fileID: 3963970540206891757}
   m_Layer: 0
   m_Name: HealthPickup
   m_TagString: Untagged
@@ -87,25 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5265368873557578166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741783227774511364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b5cbff7ca78b24e8b81c4e4371bc7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pc: {fileID: 0}
-  ps: {fileID: 0}
-  healValue: 15
-  damagePickupValue: 10
-  attackSpeedPickupValue: 0.25
-  rangePickupValue: 0.5
-  speedPickupValue: 1
 --- !u!58 &4472021550023713950
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -122,6 +103,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &3963970540206891757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741783227774511364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab0a85e64daecd44a2e347b5ff341f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pc: {fileID: 0}
+  healValue: 15
 --- !u!1 &3895335268026917983
 GameObject:
   m_ObjectHideFlags: 0

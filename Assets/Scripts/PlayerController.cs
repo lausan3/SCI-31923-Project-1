@@ -36,11 +36,13 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     private float timer;
+    private Color originalColor;
 
     #region Private references
 
     private CircleCollider2D coli;
     private Rigidbody2D rb;
+    private Material mat;
 
     #endregion
 
@@ -49,9 +51,11 @@ public class PlayerController : MonoBehaviour
         UpdateStats();
         attacking = false;
         timer = attackSpeed;
-        coli = GetComponent<CircleCollider2D>();
         health = stats.maxHealth;
+        coli = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        mat = GetComponent<Renderer>().material;
+        originalColor = mat.color;
     }
 
     // Update is called once per frame
@@ -143,9 +147,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Died!");
             // start game over screen
         }
-
-        Material mat = GetComponent<Renderer>().material;
-        Color originalColor = mat.color;
+        
         mat.color = Color.red;
         
         yield return new WaitForSeconds(IFrameTime);
