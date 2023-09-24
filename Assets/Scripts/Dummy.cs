@@ -30,7 +30,7 @@ class Dummy : MonoBehaviour, IEnemy
         originalColor = gameObject.GetComponent<Renderer>().material.color;
     }
 
-    public IEnumerator Hurt(float damage)
+    public IEnumerator Hurt(float damage, float knockbackForce)
     {
         health -= damage;
 

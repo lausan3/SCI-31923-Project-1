@@ -1,12 +1,11 @@
+using System;
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Scripting;
+
 
 public class PlayerController : MonoBehaviour
 {
-    // TODO: Change targetting to be based on floats instead of cardinal directions, makes it more fun or mouse honestly
     [RequiredMember]
     public PlayerStats stats;
     
@@ -15,26 +14,35 @@ public class PlayerController : MonoBehaviour
 
     [Header("Combat")] 
     public LayerMask enemyMask;
-
-    public float overlapRadius = 0.5f;
+    public float IFrameTime = 0.05f;
+    
     public GameObject attackType;
     public Transform aimIndicator;
 
-    private float health;
+    private Vector2 aimingDirection;
+    private bool attacking;
+    private float timeToAttackSecs;
+    private Vector2 mousePos;
+
+    #region Stats
+
+    [HideInInspector] public float health;
     private float damage;
     // this should be a total range from transform.pos -> the end of the overlap circle
     private float range;
     private float attackSpeed;
     private float knockbackForce;
-    private Vector2 aimingDirection = Vector2.right;
-    private bool attacking;
-    private float timeToAttackSecs;
-    private float arrowRotation = 0f;
+
+    #endregion
 
     private float timer;
-    private CircleCollider2D coli;
 
-    [Header("Debug")] public float debugLineZ = 0f;
+    #region Private references
+
+    private CircleCollider2D coli;
+    private Rigidbody2D rb;
+
+    #endregion
 
     private void Start()
     {
@@ -42,6 +50,8 @@ public class PlayerController : MonoBehaviour
         attacking = false;
         timer = attackSpeed;
         coli = GetComponent<CircleCollider2D>();
+        health = stats.maxHealth;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -62,45 +72,37 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
+            // rb.AddForce(Vector2.up * speed * Time.deltaTime, ForceMode2D.Impulse);
             transform.Translate(Vector2.up * speed * Time.deltaTime);
-            // set aiming angle
-            aimingDirection = Vector2.up;
-            arrowRotation = 90f;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
+            // rb.AddForce(Vector2.left * speed * Time.deltaTime, ForceMode2D.Impulse);
             transform.Translate(Vector2.left * speed * Time.deltaTime);
-            // set aiming angle
-            aimingDirection = Vector2.left;
-            arrowRotation = 180f;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
+            // rb.AddForce(Vector2.down * speed * Time.deltaTime, ForceMode2D.Impulse);
             transform.Translate(Vector2.down * speed * Time.deltaTime);
-            // set aiming angle
-            aimingDirection = Vector2.down;
-            arrowRotation = 270f;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
+            // rb.AddForce(Vector2.right * speed * Time.deltaTime, ForceMode2D.Impulse);
             transform.Translate(Vector2.right * speed * Time.deltaTime);
-            // set aiming angle
-            aimingDirection = Vector2.right;
-            arrowRotation = 0f;
         }
-        
-        // aiming indicator
-        aimIndicator.position = new Vector3(transform.position.x + (aimingDirection.x * 1f),transform.position.y + (aimingDirection.y * 1f), 1f);
-        Quaternion aimRotation = quaternion.EulerXYZ(0f, 0f, Mathf.Deg2Rad * arrowRotation);
-        aimIndicator.transform.rotation = aimRotation;
 
-        // Debug.Log((aimingDirection));
+        // mouse calculations
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        aimingDirection = (mousePos - (Vector2)transform.position).normalized;
+        
+        // aiming indicator position
+        aimIndicator.position = new Vector3(transform.position.x + (aimingDirection.x * 1f),transform.position.y + (aimingDirection.y * 1f), 1f);
     }
 
-    private IEnumerator Attack(float waitTime)
+    private IEnumerator Attack(float attackSpriteShowTime)
     {
         attacking = true;
 
@@ -108,20 +110,15 @@ public class PlayerController : MonoBehaviour
         float radius = (range - coli.radius) / 2;
         // this is the range to use for OverlapCircleAll
         Vector2 sendRange = (Vector2)transform.position + (aimingDirection * range) - (aimingDirection * new Vector2(radius, radius));
-        // Debug.Log("Current aim dir * range: " + aimingDirection * range);
-        // Debug.Log("Current position: " + transform.position);
-        // Debug.Log("Send range: " + sendRange);
-        // Debug.Log("Circle radius: " + radius);
+        
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(sendRange, radius, enemyMask);
-        // Debug.DrawLine(new Vector3(transform.position.x, transform.position.y, debugLineZ), new Vector3(transform.position.x + range, transform.position.y + range, debugLineZ), Color.red);
-        // Debug.Log("Attacked!");
         
         foreach (var other in hitEnemies)
         {
             if (other != null)
             {
                 IEnemy ec = other.transform.GetComponent<IEnemy>();
-                StartCoroutine(ec.Hurt(damage));
+                StartCoroutine(ec.Hurt(damage, knockbackForce));
                 // Debug.Log("Hurt " + other.name + "!");
             }
         }
@@ -129,14 +126,31 @@ public class PlayerController : MonoBehaviour
         float diameter = radius * 2;
         attackType.transform.localScale = new Vector3(diameter, diameter, 1f);
         GameObject attack = Instantiate(attackType, sendRange, Quaternion.identity);
-        // Debug.Log(attack.transform.position);
-        // Debug.Log(sendRange);
         
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(attackSpriteShowTime);
         
         Destroy(attack);
         
         attacking = false;
+    }
+
+    public IEnumerator TakeDamage(float damage)
+    {
+        health -= damage;
+
+        if (health <= 0f)
+        {
+            Debug.Log("Died!");
+            // start game over screen
+        }
+
+        Material mat = GetComponent<Renderer>().material;
+        Color originalColor = mat.color;
+        mat.color = Color.red;
+        
+        yield return new WaitForSeconds(IFrameTime);
+
+        mat.color = originalColor;
     }
 
     public void UpdateStats()

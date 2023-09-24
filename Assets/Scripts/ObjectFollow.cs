@@ -7,6 +7,7 @@ public class ObjectFollow : MonoBehaviour
 {
     public Transform follow;
     private bool isCamera = false;
+    public float lerpT = 0.02f;
 
     private void Start()
     {
@@ -21,7 +22,8 @@ public class ObjectFollow : MonoBehaviour
     {
         if (isCamera)
         {
-            transform.position = new Vector3(follow.transform.position.x, follow.transform.position.y, -9f);
+            Vector2 lerpedVal = Vector2.Lerp(transform.position, follow.transform.position, lerpT);
+            transform.position = new Vector3(lerpedVal.x, lerpedVal.y, -9f);
             return;
         }
         

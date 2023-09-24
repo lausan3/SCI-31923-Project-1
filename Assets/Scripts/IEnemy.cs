@@ -2,5 +2,5 @@ using System.Collections;
 
 public interface IEnemy
 { 
-    public IEnumerator Hurt(float damage);
+    public IEnumerator Hurt(float damage, float knockbackForce);
 }
