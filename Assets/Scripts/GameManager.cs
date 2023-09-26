@@ -155,6 +155,6 @@ public class GameManager : MonoBehaviour
         exp = 0;
         level = 0;
         enemyStartingHealth = 20f;
-        enemyMaxDistDelta = 0.005f;
+        enemyMaxDistDelta = 0.035f;
     }
 }

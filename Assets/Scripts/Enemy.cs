@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour, IEnemy
         healthText.text = startingHealth.ToString();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         ChasePlayer();
     }
