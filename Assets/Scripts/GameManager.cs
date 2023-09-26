@@ -1,5 +1,4 @@
 using System;
-using Unity.PlasticSCM.Editor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -156,6 +155,6 @@ public class GameManager : MonoBehaviour
         exp = 0;
         level = 0;
         enemyStartingHealth = 20f;
-        enemyMaxDistDelta = 0.01f;
+        enemyMaxDistDelta = 0.005f;
     }
 }

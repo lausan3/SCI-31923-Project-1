@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     public void ResetStats()
     { 
         maxHealth = 100f;
-        moveSpeed = 10f;
+        moveSpeed = 12f;
         attackDamage = 20f;
         attackRange = 5f;
         attackSpeed = 1.8f;
