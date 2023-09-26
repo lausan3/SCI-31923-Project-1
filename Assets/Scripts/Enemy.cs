@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -22,22 +23,29 @@ public class Enemy : MonoBehaviour, IEnemy
     private Transform player;
     private TextMeshProUGUI healthText;
     private Rigidbody2D rb;
+    private PlayerController pc;
 
     #endregion
+
+    private float hitTimer;
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        originalColor = gameObject.GetComponent<Renderer>().material.color;
+        pc = player.GetComponent<PlayerController>();
+
+        hitTimer = 0f;
         
+        // difficulty ramp
+        startingHealth = gm.enemyStartingHealth;
         health = startingHealth;
+        maxDistDelta = gm.enemyMaxDistDelta;
+        
         healthText = transform.Find("Canvas").Find("Health Text").GetComponent<TextMeshProUGUI>();
         healthText.text = startingHealth.ToString();
-
-        originalColor = gameObject.GetComponent<Renderer>().material.color;
-
-        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
-
     }
 
     private void Update()
@@ -50,12 +58,25 @@ public class Enemy : MonoBehaviour, IEnemy
         transform.position = Vector2.MoveTowards(transform.position, player.position, maxDistDelta);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(other.gameObject.GetComponent<PlayerController>().TakeDamage(attackDamage));
+            // IFrameTime wasn't properly working, so we do this instead
+            hitTimer -= Time.deltaTime;
+            
+            if (hitTimer <= -0.005f)
+            {
+                StartCoroutine(other.gameObject.GetComponent<PlayerController>().TakeDamage(attackDamage));
+
+                hitTimer = pc.IFrameTime;
+            }
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        hitTimer = 0f;
     }
 
     public IEnumerator Hurt(float damage, float knockbackForce)

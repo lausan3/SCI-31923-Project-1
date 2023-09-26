@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float spawnRange = 10f;
     public float spawnTimeSecs = 4f;
     public int howManyEnemiesToSpawn = 5;
+    [HideInInspector] public int enemiesKilled = 0;
     // public GameObject[] enemies; -> for in the event that we want multiple types of enemies
     
     private float enemyTimer;
@@ -24,16 +25,17 @@ public class GameManager : MonoBehaviour
     
     
     [Header("Difficulty Ramping")] 
-    // public float difficultyRampingAdjust;
+    public float difficultyRampingAdjust = 1;
     // we're using levels as scoring here because I don't want to come up with a formula to adjust health and such
     public int levelEXPModifier = 5;
     public float levelHealthModifier = 10f;
+    [HideInInspector] public float enemyStartingHealth = 20f;
+    [HideInInspector] public float enemyMaxDistDelta = 0.01f;
+    public float levelUpSpeedGain = 0.003f;
     
     [HideInInspector] public int exp;
-    [HideInInspector] public int nextLevelThreshold = 15;
+    public int nextLevelThreshold = 15;
     [HideInInspector] public int level;
-
-    [HideInInspector] public int enemiesKilled = 0;
 
     #region Private references
 
@@ -84,9 +86,9 @@ public class GameManager : MonoBehaviour
                 SpawnPickup();
             }
             
-            Debug.Log("Spawned " + howManyPickupsToSpawn + " pickups");
-
             pickupTimer = pickupSpawnTimeSeconds;
+
+            Debug.Log("Spawned " + howManyPickupsToSpawn + " pickups");
         }
         
         // level up
@@ -103,8 +105,16 @@ public class GameManager : MonoBehaviour
             
             level += 1;
             nextLevelThreshold += levelEXPModifier;
-
+            
             ps.maxHealth += levelHealthModifier;
+            
+            
+            // difficulty ramping
+            howManyEnemiesToSpawn += Mathf.RoundToInt(2 * difficultyRampingAdjust);
+            howManyPickupsToSpawn = Mathf.RoundToInt(3 + (level * (1 / difficultyRampingAdjust)));
+            enemyStartingHealth += 25f;
+            enemyMaxDistDelta += levelUpSpeedGain;
+            nextLevelThreshold += 10;
             
             Debug.Log("Leveled up to level " + level + "!");
         }
@@ -136,5 +146,16 @@ public class GameManager : MonoBehaviour
         float pointY = Random.Range(-playerPos.y - range, playerPos.y + range);
 
         return new Vector3(pointX, pointY, playerPos.z);
+    }
+
+    public void ResetGame()
+    {
+        howManyEnemiesToSpawn = 5;
+        enemiesKilled = 0;
+        howManyPickupsToSpawn = 3;
+        exp = 0;
+        level = 0;
+        enemyStartingHealth = 20f;
+        enemyMaxDistDelta = 0.01f;
     }
 }

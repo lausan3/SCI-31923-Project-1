@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 7278861029778465027}
   m_Layer: 0
   m_Name: RangePickup
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -375,4 +375,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pc: {fileID: 0}
   ps: {fileID: 0}
+  pis: {fileID: 0}
   rangePickupValue: 0.2

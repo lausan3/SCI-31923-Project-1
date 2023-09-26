@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     #region Stats
 
-    [HideInInspector] public float health;
+    [HideInInspector] public float health = 1f;
     private float damage;
     // this should be a total range from transform.pos -> the end of the overlap circle
     private float range;
@@ -157,10 +157,17 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateStats()
     {
-        speed = stats.moveSpeed;
+        speed = Mathf.Clamp(stats.moveSpeed, 8f, 15f);
         damage = stats.attackDamage;
-        range = stats.attackRange;
-        attackSpeed = stats.attackSpeed;
+        range = Mathf.Clamp(stats.attackRange, 1f, 10f);
+        attackSpeed = Mathf.Clamp(stats.attackSpeed, 0.75f, 5f);
         knockbackForce = stats.knockbackCoefficient;
+    }
+
+    public void ResetGame()
+    {
+        stats.ResetStats();
+        UpdateStats();
+        health = stats.maxHealth;
     }
 }
